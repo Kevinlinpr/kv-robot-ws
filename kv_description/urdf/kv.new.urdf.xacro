@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<robot name="arm" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:property name="PI" value="3.14159265359"/>
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"/>
+    </gazebo>
+    <!-- Geometrical properties -->
+    <xacro:property name="link_side" value="0.02"/>
+    <xacro:property name="joint_radius" value="0.018"/>
+    <xacro:property name="joint_length" value="0.025"/>
+    <xacro:property name="toe_length" value="0.03"/>
+    <xacro:property name="foot_length" value="0.04"/>
+    <xacro:property name="thigh_length" value="0.04"/>
+    <xacro:property name="calf_length" value="0.36"/>
+    <xacro:property name="big_arm_length" value="0.04"/>
+    <xacro:property name="arm_length" value="0.30"/>
+    <xacro:property name="hand_length" value="0.04"/>
+    <xacro:property name="finger_length" value="0.03"/>
+
+    <!-- Materials -->
+    <material name="orange">
+        <color rgba="1.00 0.67 0.02 1.00"/>
+    </material>
+
+    <material name="gray">
+        <color rgba="0.80 0.80 0.80 1.00"/>
+    </material>
+
+    <!-- Generates a box visual/collision/inertial -->
+    <xacro:macro name="prism_vci" params="side length  mass:=1 *origin">
+
+        <xacro:macro name="prism_geometry">
+            <xacro:insert_block name="origin"/>
+            <geometry>
+                <box size="${side} ${side} ${length}"/>
+            </geometry>
+        </xacro:macro>
+
+        <visual>
+            <xacro:prism_geometry/>
+            <material name="orange"/>
+        </visual>
+
+        <collision>
+            <xacro:prism_geometry/>
+        </collision>
+
+        <inertial>
+            <xacro:insert_block name="origin"/>
+            <mass value="${mass}"/>
+            <inertia ixx="${(mass/12)*(side*side+length*length)}"
+                     iyy="${(mass/12)*(side*side+length*length)}"
+                     izz="${(mass/6)*(side*side)}"
+                     ixy="0" ixz="0" iyz="0"/>
+        </inertial>
+
+    </xacro:macro>
+
+    <!-- Generates a cylinder visual/collision -->
+    <xacro:macro name="cylinder_vc" params="radius length *origin">
+
+        <xacro:macro name="cylinder_geometry">
+            <xacro:insert_block name="origin"/>
+            <geometry>
+                <cylinder length="${length}" radius="${radius}"/>
+            </geometry>
+        </xacro:macro>
+
+        <visual>
+            <xacro:cylinder_geometry/>
+            <material name="gray"/>
+        </visual>
+
+        <collision>
+            <xacro:cylinder_geometry/>
+        </collision>
+
+    </xacro:macro>
+
+    <!-- Generates child joint of parent -->
+    <xacro:macro name="arm_joint" params="child parent type:='revolute' roll:=0 pitch:=0 yaw:=0 dist:=0 axis">
+
+        <joint name="${parent}_${child}_joint" type="${type}">
+            <origin xyz="0 0 ${dist}" rpy="${roll} ${pitch} ${yaw}"/>
+            <parent link="${parent}"/>
+            <child link="${child}"/>
+            <axis xyz="${axis}"/>
+            <limit effort="40.0"
+                   velocity="1.0"
+                   lower="${-PI}"
+                   upper="${PI}"/>
+        </joint>
+
+        <!-- Required for ROS control -->
+        <transmission name="${parent}_${child}_transmission">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${parent}_${child}_joint">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${parent}_${child}_actuator"/>
+        </transmission>
+
+        <link name="${parent}">
+
+            <xacro:prism_vci length="${dist}" side="${link_side}">
+                <origin xyz="0 0 ${dist/2}" rpy="0 0 0"/>
+            </xacro:prism_vci>
+
+            <xacro:cylinder_vc radius="${joint_radius}" length="${joint_length}">
+
+                <xacro:if value="${axis=='0 0 1'}">
+                    <origin xyz="0 0 ${dist}" rpy="0 0 0"/>
+                </xacro:if>
+
+                <xacro:if value="${axis=='1 0 0'}">
+                    <origin xyz="0 0 ${dist}" rpy="0 ${PI/2} 0"/>
+                </xacro:if>
+
+                <xacro:if value="${axis=='0 1 0'}">
+                    <origin xyz="0 0 ${dist}" rpy="${PI/2} 0 0"/>
+                </xacro:if>
+
+            </xacro:cylinder_vc>
+
+        </link>
+
+        <gazebo reference="${parent}">
+            <material>Gazebo/Orange</material>
+        </gazebo>
+
+    </xacro:macro>
+
+    <link name="world"/>
+    <joint name="world_foot_joint" type="fixed">
+        <parent link="world"/>
+        <child link="toe"/>
+    </joint>
+
+    <xacro:arm_joint parent="toe" child="foot" axis="0 0 1" dist="${toe_length}"/>
+    <xacro:arm_joint parent="foot" child="thigh" axis="1 0 0" dist="${foot_length}"/>
+    <xacro:arm_joint parent="thigh" child="calf" axis="0 0 1" dist="${thigh_length}"/>
+    <xacro:arm_joint parent="calf" child="big_arm" axis="1 0 0" dist="${calf_length}"/>
+    <xacro:arm_joint parent="big_arm" child="arm" axis="0 0 1" dist="${big_arm_length}"/>
+    <xacro:arm_joint parent="arm" child="hand" axis="1 0 0" dist="${arm_length}"/>
+    <xacro:arm_joint parent="hand" child="finger" axis="0 0 1" dist="${hand_length}"/>
+    <!-- End effector -->
+    <link name="finger">
+        <xacro:prism_vci length="${finger_length}" side="${link_side}">
+            <origin xyz="0 0 ${finger_length/2}" rpy="0 0 0"/>
+        </xacro:prism_vci>
+    </link>
+
+    <gazebo reference="finger">
+        <material>Gazebo/Red</material>
+        <sensor type="camera" name="camera1">
+            <update_rate>30.0</update_rate>
+            <camera name="head">
+                <horizontal_fov>1.3962634</horizontal_fov>
+                <image>
+                    <width>1280</width>
+                    <height>720</height>
+                    <format>R8G8B8</format>
+                </image>
+                <clip>
+                    <near>0.02</near>
+                    <far>300</far>
+                </clip>
+                <noise>
+                    <type>gaussian</type>
+                    <!-- Noise is sampled independently per pixel on each frame.
+                         That pixel's noise value is added to each of its color
+                         channels, which at that point lie in the range [0,1]. -->
+                    <mean>0.0</mean>
+                    <stddev>0.007</stddev>
+                </noise>
+            </camera>
+            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+                <alwaysOn>true</alwaysOn>
+                <updateRate>0.0</updateRate>
+                <cameraName>kv/camera1</cameraName>
+                <imageTopicName>image_raw</imageTopicName>
+                <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+                <frameName>camera_link</frameName>
+                <hackBaseline>0.07</hackBaseline>
+                <distortionK1>0.0</distortionK1>
+                <distortionK2>0.0</distortionK2>
+                <distortionK3>0.0</distortionK3>
+                <distortionT1>0.0</distortionT1>
+                <distortionT2>0.0</distortionT2>
+            </plugin>
+        </sensor>
+    </gazebo>
+
+</robot>

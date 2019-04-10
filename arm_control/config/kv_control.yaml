@@ -1,0 +1,38 @@
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: 50
+
+toe_foot_joint_controller:
+  type: effort_controllers/JointPositionController
+  joint: toe_foot_joint
+  pid: {p: 100.0, i: 0.01, d: 10.0}
+
+foot_thigh_joint_controller:
+  type: effort_controllers/JointPositionController
+  joint: foot_thigh_joint
+  pid: {p: 100.0, i: 0.01, d: 10.0}
+
+thigh_calf_joint_controller:
+  type: effort_controllers/JointPositionController
+  joint: thigh_calf_joint
+  pid: {p: 100.0, i: 0.01, d: 10.0}
+
+calf_big_arm_joint_controller:
+  type: effort_controllers/JointPositionController
+  joint: calf_big_arm_joint
+  pid: {p: 100.0, i: 0.01, d: 10.0}
+
+big_arm_arm_joint_controller:
+  type: effort_controllers/JointPositionController
+  joint: big_arm_arm_joint
+  pid: {p: 100.0, i: 0.01, d: 10.0}
+
+arm_hand_joint_controller:
+  type: effort_controllers/JointPositionController
+  joint: arm_hand_joint
+  pid: {p: 100.0, i: 0.01, d: 10.0}
+
+hand_finger_joint_controller:
+  type: effort_controllers/JointPositionController
+  joint: hand_finger_joint
+  pid: {p: 100.0, i: 0.01, d: 10.0}

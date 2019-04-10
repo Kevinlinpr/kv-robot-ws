@@ -1,0 +1,25 @@
+<!--2019年4月3日18:05 kevinlinpr@gmail.com-->
+<launch>
+    <!--加载Gazebo-->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <!--加载自定义Gazebo世界-->
+        <arg name="world_name" value="$(find kv_gazebo)/worlds/kv.world"/>
+        <!--取消暂停-->
+        <arg name="paused" value="false"/>
+        <!--启动模拟时间-->
+        <arg name="use_sim_time" value="true"/>
+        <!--启动用户界面-->
+        <arg name="gui" value="true"/>
+        <!--取消录制-->
+        <arg name="recording" value="false"/>
+        <!--取消调试-->
+        <arg name="debug" value="false"/>
+    </include>
+
+    <!--生成/加载机器人描述文件-->
+    <include file="$(find kv_description)/launch/description.launch"/>
+
+    <!--放置机器人描述文件解析模型到Gazebo中-->
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model arm"/>
+    <include file="$(find arm_control)/launch/kv_control.launch"/>
+</launch>

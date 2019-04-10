@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<!--2019年4月3日18:14 kevinlinpr@gmail.com-->
+<sdf version="1.4">
+    <world name="default">
+        <include>
+            <!--导入地面模型-->
+            <uri>model://ground_plane</uri>
+        </include>
+        <include>
+            <!--导入环境光模型-->
+            <uri>model://sun</uri>
+        </include>
+    </world>
+</sdf>

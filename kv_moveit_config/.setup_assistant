@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: kv_description
+    relative_path: urdf/kv.new.urdf.xacro
+    xacro_args: "--inorder "
+  SRDF:
+    relative_path: config/arm.srdf
+  CONFIG:
+    author_name: kevinlinpr
+    author_email: kevinlinpr@gmail.com
+    generated_timestamp: 1554453421

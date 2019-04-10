@@ -1,0 +1,20 @@
+<launch>
+    <rosparam file="$(find arm_control)/config/kv_control.yaml" command="load"/>
+
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+          output="screen" ns="/arm"
+          args="
+                toe_foot_joint_controller
+                foot_thigh_joint_controller
+                thigh_calf_joint_controller
+                calf_big_arm_joint_controller
+                big_arm_arm_joint_controller
+                arm_hand_joint_controller
+                hand_finger_joint_controller
+          "/>
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+          respawn="false" output="screen">
+        <remap from="/joint_states" to="/arm/joint_states"/>
+    </node>
+</launch>

@@ -1,0 +1,587 @@
+<robot
+  name="kv">
+    <link
+            name="base_link">
+        <inertial>
+            <origin
+                    xyz="-3.48411235527561E-20 0.0301785281442949 -1.27737983847514E-17"
+                    rpy="0 0 0" />
+            <mass
+                    value="0.04711204348934" />
+            <inertia
+                    ixx="0"
+                    ixy="0"
+                    ixz="0"
+                    iyy="0"
+                    iyz="0"
+                    izz="0" />
+        </inertial>
+        <visual>
+            <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+            <geometry>
+                <mesh
+                        filename="package://kv_description/meshes/base_link.stl" />
+            </geometry>
+            <material
+                    name="">
+                <color
+                        rgba="1 1 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+            <geometry>
+                <mesh
+                        filename="package://kv_description/meshes/base_link.stl" />
+            </geometry>
+        </collision>
+    </link>
+    <link
+            name="link1">
+        <inertial>
+            <origin
+                    xyz="0.00268827345999307 0.0945967858897385 0.00430360818024049"
+                    rpy="0 0 0" />
+            <mass
+                    value="0.193063663185278" />
+            <inertia
+                    ixx="0.000298000845841169"
+                    ixy="-1.60317043521837E-05"
+                    ixz="-1.39110171668462E-06"
+                    iyy="3.0959491270747E-06"
+                    iyz="-2.56648644641351E-05"
+                    izz="0.000296642815998793" />
+        </inertial>
+        <visual>
+            <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+            <geometry>
+                <mesh
+                        filename="package://kv_description/meshes/link1.stl" />
+            </geometry>
+            <material
+                    name="">
+                <color
+                        rgba="1 1 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+            <geometry>
+                <mesh
+                        filename="package://kv_description/meshes/link1.stl" />
+            </geometry>
+        </collision>
+    </link>
+    <transmission name="joint1">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint1">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint1">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <joint
+            name="joint1"
+            type="continuous">
+        <origin
+                xyz="0 0 0.06"
+                rpy="1.5708 -1.2109E-16 3.1197" />
+        <parent
+                link="base_link" />
+        <child
+                link="link1" />
+        <axis
+                xyz="0 1 0" />
+    </joint>
+    <link
+            name="link2">
+        <inertial>
+            <origin
+                    xyz="-0.00210246735273234 -0.00510040197050435 -0.0809051700038997"
+                    rpy="0 0 0" />
+            <mass
+                    value="0.104926581676356" />
+            <inertia
+                    ixx="0"
+                    ixy="0"
+                    ixz="0"
+                    iyy="0"
+                    iyz="0"
+                    izz="0" />
+        </inertial>
+        <visual>
+            <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+            <geometry>
+                <mesh
+                        filename="package://kv_description/meshes/link2.stl" />
+            </geometry>
+            <material
+                    name="">
+                <color
+                        rgba="1 1 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+            <geometry>
+                <mesh
+                        filename="package://kv_description/meshes/link2.stl" />
+            </geometry>
+        </collision>
+    </link>
+    <transmission name="joint2">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint2">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint2">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <joint
+            name="joint2"
+            type="continuous">
+        <origin
+                xyz="0 0.135 0"
+                rpy="2.5615 0.56348 -0.8869" />
+        <parent
+                link="link1" />
+        <child
+                link="link2" />
+        <axis
+                xyz="0 0 1" />
+    </joint>
+    <link
+            name="link3">
+        <inertial>
+            <origin
+                    xyz="0.000280029217700144 0.164778711604506 0.00400958216544994"
+                    rpy="0 0 0" />
+            <mass
+                    value="0.787800303264324" />
+            <inertia
+                    ixx="0.00722772946814379"
+                    ixy="-4.19420038114878E-05"
+                    ixz="2.89088030775027E-06"
+                    iyy="6.98144647424678E-05"
+                    iyz="-6.62618668950201E-05"
+                    izz="0.00715871907746602" />
+        </inertial>
+        <visual>
+            <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+            <geometry>
+                <mesh
+                        filename="package://kv_description/meshes/link3.stl" />
+            </geometry>
+            <material
+                    name="">
+                <color
+                        rgba="1 1 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+            <geometry>
+                <mesh
+                        filename="package://kv_description/meshes/link3.stl" />
+            </geometry>
+        </collision>
+    </link>
+    <transmission name="joint3">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint3">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint3">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <joint
+            name="joint3"
+            type="continuous">
+        <origin
+                xyz="0 0 -0.09"
+                rpy="3.1416 1.3043 1.8969E-15" />
+        <parent
+                link="link2" />
+        <child
+                link="link3" />
+        <axis
+                xyz="0 1 0" />
+    </joint>
+    <link
+            name="link4">
+        <inertial>
+            <origin
+                    xyz="-0.00210198291625163 -0.00510034361445849 -0.0809043556658708"
+                    rpy="0 0 0" />
+            <mass
+                    value="0.104930081178366" />
+            <inertia
+                    ixx="0"
+                    ixy="0"
+                    ixz="0"
+                    iyy="0"
+                    iyz="0"
+                    izz="0" />
+        </inertial>
+        <visual>
+            <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+            <geometry>
+                <mesh
+                        filename="package://kv_description/meshes/link4.stl" />
+            </geometry>
+            <material
+                    name="">
+                <color
+                        rgba="1 1 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+            <geometry>
+                <mesh
+                        filename="package://kv_description/meshes/link4.stl" />
+            </geometry>
+        </collision>
+    </link>
+    <transmission name="joint4">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint4">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint4">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <joint
+            name="joint4"
+            type="continuous">
+        <origin
+                xyz="0 0.36 0"
+                rpy="3.7192E-15 -1.1102E-15 -0.95994" />
+        <parent
+                link="link3" />
+        <child
+                link="link4" />
+        <axis
+                xyz="0 0 1" />
+    </joint>
+    <link
+            name="link5">
+        <inertial>
+            <origin
+                    xyz="0.000280010295339694 0.10429768048651 0.00400942872407001"
+                    rpy="0 0 0" />
+            <mass
+                    value="0.787801196097673" />
+            <inertia
+                    ixx="0.00722779594241823"
+                    ixy="-4.19393237803521E-05"
+                    ixz="2.89088498641138E-06"
+                    iyy="6.98174241497681E-05"
+                    iyz="-6.62378095785077E-05"
+                    izz="0.00715878247805226" />
+        </inertial>
+        <visual>
+            <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+            <geometry>
+                <mesh
+                        filename="package://kv_description/meshes/link5.stl" />
+            </geometry>
+            <material
+                    name="">
+                <color
+                        rgba="1 1 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+            <geometry>
+                <mesh
+                        filename="package://kv_description/meshes/link5.stl" />
+            </geometry>
+        </collision>
+    </link>
+    <transmission name="joint5">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint5">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint5">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <joint
+            name="joint5"
+            type="continuous">
+        <origin
+                xyz="0 -0.060481 -0.09"
+                rpy="3.1416 0.37986 -1.4943E-17" />
+        <parent
+                link="link4" />
+        <child
+                link="link5" />
+        <axis
+                xyz="0 1 0" />
+    </joint>
+    <link
+            name="link6">
+        <inertial>
+            <origin
+                    xyz="0.020583837284486 -0.0244927019748049 -0.00137450937153039"
+                    rpy="0 0 0" />
+            <mass
+                    value="0.160406414383487" />
+            <inertia
+                    ixx="0.000103445694540816"
+                    ixy="1.42967202859882E-05"
+                    ixz="-4.5692189273846E-07"
+                    iyy="2.08345289893432E-06"
+                    iyz="3.30274154233011E-06"
+                    izz="0.000105318036795272" />
+        </inertial>
+        <visual>
+            <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+            <geometry>
+                <mesh
+                        filename="package://kv_description/meshes/link6.stl" />
+            </geometry>
+            <material
+                    name="">
+                <color
+                        rgba="1 1 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+            <geometry>
+                <mesh
+                        filename="package://kv_description/meshes/link6.stl" />
+            </geometry>
+        </collision>
+    </link>
+    <transmission name="joint6">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint6">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint6">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <joint
+            name="joint6"
+            type="continuous">
+        <origin
+                xyz="0 0.29952 -0.063466"
+                rpy="2.8394 1.5708 0" />
+        <parent
+                link="link5" />
+        <child
+                link="link6" />
+        <axis
+                xyz="-1 0 0" />
+    </joint>
+    <link
+            name="link7">
+        <inertial>
+            <origin
+                    xyz="-0.00185349311031408 -0.0095125912915775 -0.0620479983864288"
+                    rpy="0 0 0" />
+            <mass
+                    value="0.118970373701656" />
+            <inertia
+                    ixx="0"
+                    ixy="0"
+                    ixz="0"
+                    iyy="0"
+                    iyz="0"
+                    izz="0" />
+        </inertial>
+        <visual>
+            <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+            <geometry>
+                <mesh
+                        filename="package://kv_description/meshes/link7.stl" />
+            </geometry>
+            <material
+                    name="">
+                <color
+                        rgba="1 1 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+            <geometry>
+                <mesh
+                        filename="package://kv_description/meshes/link7.stl" />
+            </geometry>
+        </collision>
+    </link>
+    <transmission name="joint7">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint7">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint7">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <joint
+            name="joint7"
+            type="continuous">
+        <origin
+                xyz="0.026534 -0.06493 0"
+                rpy="1.5708 -0.40897 -3.1416" />
+        <parent
+                link="link6" />
+        <child
+                link="link7" />
+        <axis
+                xyz="0 0 -1" />
+    </joint>
+
+    <link name="camera_link">
+        <collision>
+            <origin xyz="0 0 0" rpy="0 1.5 0"/>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin xyz="0 0 0" rpy="0 1.5 0"/>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
+            <material name="green"/>
+        </visual>
+
+        <inertial>
+            <mass value="0.5" />
+            <origin xyz="0 0 0" rpy="0 1.5 0"/>
+            <box_inertia m="0.5" x="0.01" y="0.01" z="0.01" />
+            <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+        </inertial>
+    </link>
+
+    <joint name="camera_joint" type="fixed">
+        <origin xyz="0 0 -0.11" rpy="-1.6 1.6 0"/>
+        <parent link="link7"/>
+        <child link="camera_link"/>
+    </joint>
+    <gazebo reference="link1">
+        <turnGravityOff>true</turnGravityOff>
+        <kinematic>true</kinematic>
+    </gazebo>
+    <gazebo reference="link2">
+        <turnGravityOff>true</turnGravityOff>
+        <kinematic>true</kinematic>
+    </gazebo>
+    <gazebo reference="link3">
+        <turnGravityOff>true</turnGravityOff>
+        <kinematic>true</kinematic>
+    </gazebo>
+    <gazebo reference="link4">
+        <turnGravityOff>true</turnGravityOff>
+        <kinematic>true</kinematic>
+    </gazebo>
+    <gazebo reference="link5">
+        <turnGravityOff>true</turnGravityOff>
+        <kinematic>true</kinematic>
+    </gazebo>
+    <gazebo reference="link6">
+        <turnGravityOff>true</turnGravityOff>
+        <kinematic>true</kinematic>
+    </gazebo>
+    <gazebo reference="link7">
+        <turnGravityOff>true</turnGravityOff>
+        <kinematic>true</kinematic>
+    </gazebo>
+    <!-- camera -->
+    <gazebo reference="camera_link">
+        <sensor type="camera" name="camera1">
+            <update_rate>30.0</update_rate>
+            <camera name="head">
+                <horizontal_fov>1.3962634</horizontal_fov>
+                <image>
+                    <width>1280</width>
+                    <height>720</height>
+                    <format>R8G8B8</format>
+                </image>
+                <clip>
+                    <near>0.02</near>
+                    <far>300</far>
+                </clip>
+                <noise>
+                    <type>gaussian</type>
+                    <!-- Noise is sampled independently per pixel on each frame.
+                         That pixel's noise value is added to each of its color
+                         channels, which at that point lie in the range [0,1]. -->
+                    <mean>0.0</mean>
+                    <stddev>0.007</stddev>
+                </noise>
+            </camera>
+            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+                <alwaysOn>true</alwaysOn>
+                <updateRate>0.0</updateRate>
+                <cameraName>kv/camera1</cameraName>
+                <imageTopicName>image_raw</imageTopicName>
+                <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+                <frameName>camera_link</frameName>
+                <hackBaseline>0.07</hackBaseline>
+                <distortionK1>0.0</distortionK1>
+                <distortionK2>0.0</distortionK2>
+                <distortionK3>0.0</distortionK3>
+                <distortionT1>0.0</distortionT1>
+                <distortionT2>0.0</distortionT2>
+            </plugin>
+        </sensor>
+    </gazebo>
+    <gazebo>
+        <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
+            <robotNamespace>/kv</robotNamespace>
+        </plugin>
+    </gazebo>
+</robot>

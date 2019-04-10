@@ -1,0 +1,13 @@
+<!--2019年4月3日18:52 kevinlinpr@gmail.com-->
+<launch>
+    <!--加载关节控制器配置属性-->
+    <rosparam file="$(find arm_control)/config/control.yaml" command="load"/>
+
+    <!--加载控制器(指向robot_control/config/control.yaml中的属性配置)-->
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+          args="joint_state_controller
+                arm_controller"/>
+    <!--joint states 转化为tf变换 用于Rviz-->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
+
+</launch>

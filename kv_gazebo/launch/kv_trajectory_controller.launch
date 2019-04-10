@@ -1,0 +1,5 @@
+<launch>
+    <rosparam file="$(find kv_gazebo)/config/trajectory_control.yaml" command="load"/>
+    <node name="kv_controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+          output="screen" ns="kv" args="joint_trajectory_controller"/>
+</launch>

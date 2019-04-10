@@ -1,0 +1,9 @@
+<!--2019年4月3日17:55 kevinlinpr@gmail.com-->
+<launch>
+    <!--生成/加载机器人描述文件-->
+    <param name="robot_description"
+           command="$(find xacro)/xacro --inorder '$(find kv_description)/urdf/kv.new.urdf.xacro'"/>
+    <!--或使用下面的写法-->
+    <!--<param name="robot_description"-->
+           <!--command="$(find xacro)/xacro.py $(find kv_description)/urdf/kv.urdf.back.xacro" />-->
+</launch>

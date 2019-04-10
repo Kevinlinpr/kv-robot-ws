@@ -1,0 +1,20 @@
+<launch>
+    <rosparam file="$(find robot_control)/config/kv_control.yaml" command="load"/>
+
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+          output="screen" ns="/kv"
+          args="
+                joint1_controller
+                joint2_controller
+                joint3_controller
+                joint4_controller
+                joint5_controller
+                joint6_controller
+                joint7_controller
+          "/>
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+          respawn="false" output="screen">
+        <remap from="/joint_states" to="/kv/joint_states"/>
+    </node>
+</launch>

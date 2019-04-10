@@ -1,0 +1,329 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="arm">
+    <xacro:property name="link_side" value="0.02"/>
+    <xacro:property name="finger_length" value="0.03"/>
+    <gazebo>
+        <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
+        </plugin>
+    </gazebo>
+
+    <material name="black">
+        <color rgba="0.0 0.0 0.0 0.9"/>
+    </material>
+    <material name="blue">
+        <color rgba="0.0 0.0 255.0 0.9"/>
+    </material>
+
+    <xacro:macro name="prism_vci" params="side length mass:=1 *origin">
+
+        <xacro:macro name="prism_geometry">
+            <xacro:insert_block name="origin"/>
+            <geometry>
+                <box size="${side} ${side} ${length}"/>
+            </geometry>
+        </xacro:macro>
+
+        <visual>
+            <xacro:prism_geometry/>
+            <material name="orange"/>
+        </visual>
+
+        <collision>
+            <xacro:prism_geometry/>
+        </collision>
+
+        <inertial>
+            <xacro:insert_block name="origin"/>
+            <mass value="${mass}"/>
+            <inertia ixx="${(mass/12)*(side*side+length*length)}"
+                     iyy="${(mass/12)*(side*side+length*length)}"
+                     izz="${(mass/6)*(side*side)}"
+                     ixy="0" ixz="0" iyz="0"/>
+        </inertial>
+
+    </xacro:macro>
+
+    <xacro:macro name="model" params="material_color stl_file_name *origin **inertial_context">
+        <xacro:macro name="model_geometry">
+            <xacro:insert_block name="origin"/>
+            <geometry>
+                <mesh filename="${stl_file_name}"/>
+            </geometry>
+        </xacro:macro>
+
+        <visual>
+            <xacro:model_geometry/>
+            <xacro:if value="${material_color == 'black'}">
+                <material name="black"/>
+            </xacro:if>
+            <xacro:if value="${material_color == 'blue'}">
+                <material name="blue"/>
+            </xacro:if>
+        </visual>
+
+        <collision>
+            <xacro:model_geometry/>
+        </collision>
+
+        <inertial>
+            <xacro:insert_block name="inertial_context"/>
+        </inertial>
+
+    </xacro:macro>
+
+    <xacro:macro name="arm_joint" params="child parent type color filename axis *model_origin *origin **inertial_context">
+        <joint name="${parent}_${child}_joint" type="${type}">
+            <xacro:insert_block name="model_origin"/>
+            <parent link="${parent}"/>
+            <child link="${child}"/>
+            <axis xyz="${axis}"/>
+        </joint>
+
+        <transmission name="${parent}_${child}_transmission">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${parent}_${child}_joint">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${parent}_${child}_actuator"/>
+        </transmission>
+        <link name="${parent}">
+            <xacro:model material_color="${color}" stl_file_name="${filename}">
+                <xacro:insert_block name="origin"/>
+                <xacro:insert_block name="inertial_context"/>
+            </xacro:model>
+        </link>
+
+        <gazebo reference="${parent}">
+            <xacro:if value="${color == 'black'}">
+                <material>Gazebo/Black</material>
+            </xacro:if>
+            <xacro:if value="${color == 'blue'}">
+                <material>Gazebo/Blue</material>
+            </xacro:if>
+            <turnGravityOff>true</turnGravityOff>
+            <kinematic>true</kinematic>
+        </gazebo>
+    </xacro:macro>
+
+    <link name="world"/>
+    <joint name="world_foot_joint" type="fixed">
+        <parent link="world"/>
+        <child link="toe"/>
+    </joint>
+
+
+    <xacro:arm_joint parent="toe" child="foot" axis="0 1 0" color="black" type="continuous"
+                     filename="package://kv_description/meshes/toe_foot_link.stl">
+        <origin
+                xyz="0 -0.06 0"
+                rpy="3.1416 0.91035 -7.8821E-17" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <remaining>
+            <inertial>
+                <origin
+                        xyz="0.0026874 0.094598 0.0043029"
+                        rpy="0 0 0" />
+                <mass
+                        value="0.19306" />
+                <inertia
+                        ixx="0.00029801"
+                        ixy="-1.6027E-05"
+                        ixz="-1.3904E-06"
+                        iyy="3.0946E-06"
+                        iyz="-2.5661E-05"
+                        izz="0.00029666" />
+            </inertial>
+        </remaining>
+    </xacro:arm_joint>
+
+    <xacro:arm_joint parent="foot" child="thigh" axis="0 0 1" color="blue" type="continuous"
+                     filename="package://kv_description/meshes/foot_thigh_link.stl">
+        <origin
+                xyz="0.024767 0.135 0.024767"
+                rpy="3.1342 0.78537 -0.010507" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <remaining>
+            <inertial>
+                <origin
+                        xyz="-0.0021034 -0.0050999 -0.045876"
+                        rpy="0 0 0" />
+                <mass
+                        value="0.10494" />
+                <inertia
+                        ixx="0"
+                        ixy="0"
+                        ixz="0"
+                        iyy="0"
+                        iyz="0"
+                        izz="0" />
+            </inertial>
+        </remaining>
+    </xacro:arm_joint>
+
+    <xacro:arm_joint parent="thigh" child="calf" axis="0 1 0" color="blue" type="continuous"
+                     filename="package://kv_description/meshes/thigh_calf_link.stl">
+        <origin
+                xyz="0 -0.044415 -0.054974"
+                rpy="3.1416 -0.0038068 -1.0114E-15" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <remaining>
+            <inertial>
+                <origin
+                        xyz="0.00027997 0.12036 0.0040096"
+                        rpy="0 0 0" />
+                <mass
+                        value="0.7878" />
+                <inertia
+                        ixx="0.0072279"
+                        ixy="-4.1933E-05"
+                        ixz="2.8902E-06"
+                        iyy="6.9814E-05"
+                        iyz="-6.6258E-05"
+                        izz="0.0071588" />
+            </inertial>
+        </remaining>
+    </xacro:arm_joint>
+
+    <xacro:arm_joint parent="calf" child="big_arm" axis="0 0 -1" color="blue" type="continuous"
+                     filename="package://kv_description/meshes/calf_big_arm_link.stl">
+        <origin
+                xyz="0 0.31559 -0.035401"
+                rpy="1.473E-16 6.0222E-16 -3.1339" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <remaining>
+            <inertial>
+                <origin
+                        xyz="-0.0021034 -0.0050999 -0.045501"
+                        rpy="0 0 0" />
+                <mass
+                        value="0.10494" />
+                <inertia
+                        ixx="0"
+                        ixy="0"
+                        ixz="0"
+                        iyy="0"
+                        iyz="0"
+                        izz="0" />
+            </inertial>
+        </remaining>
+    </xacro:arm_joint>
+
+    <xacro:arm_joint parent="big_arm" child="arm" axis="0 1 0" color="blue" type="continuous"
+                     filename="package://kv_description/meshes/big_arm_arm_link.stl">
+        <origin
+                xyz="0 -0.045 -0.054599"
+                rpy="3.1416 -0.0051076 -4.0902E-17" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <remaining>
+            <inertial>
+                <origin
+                        xyz="0.00027996 0.11978 0.0040096"
+                        rpy="0 0 0" />
+                <mass
+                        value="0.7878" />
+                <inertia
+                        ixx="0.0072278"
+                        ixy="-4.1931E-05"
+                        ixz="2.8901E-06"
+                        iyy="6.9814E-05"
+                        iyz="-6.6259E-05"
+                        izz="0.0071588" />
+            </inertial>
+        </remaining>
+    </xacro:arm_joint>
+
+    <xacro:arm_joint parent="arm" child="hand" axis="-1 0 0" color="blue" type="continuous"
+                     filename="package://kv_description/meshes/arm_hand_link.stl">
+        <origin
+                xyz="0 0.315 -0.035719"
+                rpy="3.1364 1.5708 0" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <remaining>
+            <inertial>
+                <origin
+                        xyz="0.048329 -0.024492 -0.0013759"
+                        rpy="0 0 0" />
+                <mass
+                        value="0.16041" />
+                <inertia
+                        ixx="0.00010345"
+                        ixy="1.4301E-05"
+                        ixz="-4.5751E-07"
+                        iyy="2.0848E-06"
+                        iyz="3.3061E-06"
+                        izz="0.00010532" />
+            </inertial>
+        </remaining>
+    </xacro:arm_joint>
+
+    <xacro:arm_joint parent="hand" child="finger" axis="0 0 -1" color="blue" type="continuous"
+                     filename="package://kv_description/meshes/hand_finger_link.stl">
+        <origin
+                xyz="0.054281 -0.0896 0"
+                rpy="-1.5708 -1.5553 -4.3394E-13" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <remaining>
+            <inertial>
+                <origin
+                        xyz="-0.0018551 -0.0095131 -0.037375"
+                        rpy="0 0 0" />
+                <mass
+                        value="0.11897" />
+                <inertia
+                        ixx="0"
+                        ixy="0"
+                        ixz="0"
+                        iyy="0"
+                        iyz="0"
+                        izz="0" />
+            </inertial>
+        </remaining>
+    </xacro:arm_joint>
+
+    <link name="finger">
+        <xacro:prism_vci length="${finger_length}" side="${link_side}">
+            <origin xyz="0 0 ${finger_length/2}" rpy="0 0 0"/>
+        </xacro:prism_vci>
+    </link>
+    <gazebo reference="finger">
+        <material>Gazebo/Red</material>
+        <sensor type="camera" name="camera1">
+            <update_rate>30.0</update_rate>
+            <camera name="head">
+                <horizontal_fov>1.3962634</horizontal_fov>
+                <image>
+                    <width>1280</width>
+                    <height>720</height>
+                    <format>R8G8B8</format>
+                </image>
+                <clip>
+                    <near>0.02</near>
+                    <far>300</far>
+                </clip>
+                <noise>
+                    <type>gaussian</type>
+                    <!-- Noise is sampled independently per pixel on each frame.
+                         That pixel's noise value is added to each of its color
+                         channels, which at that point lie in the range [0,1]. -->
+                    <mean>0.0</mean>
+                    <stddev>0.007</stddev>
+                </noise>
+            </camera>
+            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+                <alwaysOn>true</alwaysOn>
+                <updateRate>0.0</updateRate>
+                <cameraName>kv/camera1</cameraName>
+                <imageTopicName>image_raw</imageTopicName>
+                <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+                <frameName>camera_link</frameName>
+                <hackBaseline>0.07</hackBaseline>
+                <distortionK1>0.0</distortionK1>
+                <distortionK2>0.0</distortionK2>
+                <distortionK3>0.0</distortionK3>
+                <distortionT1>0.0</distortionT1>
+                <distortionT2>0.0</distortionT2>
+            </plugin>
+        </sensor>
+    </gazebo>
+
+</robot>

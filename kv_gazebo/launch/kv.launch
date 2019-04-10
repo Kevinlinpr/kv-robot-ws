@@ -1,0 +1,11 @@
+<launch>
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find kv_gazebo)/worlds/kv.world"/>
+    </include>
+
+    <param name="robot_description"
+           command="$(find xacro)/xacro.py $(find kv_description)/urdf/kv.urdf.xacro" />
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+          args="-param robot_description -urdf -model kv"/>
+    <include file="$(find robot_control)/launch/kv_control.launch"/>
+</launch>

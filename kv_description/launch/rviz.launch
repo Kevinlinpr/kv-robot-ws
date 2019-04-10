@@ -1,0 +1,17 @@
+<!--2019年4月3日18:21 kevinlinpr@gmail.com-->
+<launch>
+    <!--生成/加载机器人描述文件-->
+    <include file="$(find kv_description)/launch/description.launch"/>
+
+    <!--Joint state publisher 提供用户界面用于手动输入joint states-->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <!--设置use_gui为true开启用户界面-->
+        <param name="use_gui" value="true"/>
+    </node>
+
+    <!--机器人state publisher 订阅joint states 并且发布tf变换消息-->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+    <!--开启Rviz可视化机器人(加载Rviz配置文件)-->
+    <node name="rviz" pkg="rviz" type="rviz" output="screen" args="-d '$(find kv_description)/rviz/urdf.rviz'"/>
+</launch>

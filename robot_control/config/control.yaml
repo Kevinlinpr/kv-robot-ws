@@ -1,0 +1,25 @@
+#<!--2019年4月3日18:47 kevinlinpr@gmail.com-->
+#发布所有关节状态joint states
+joint_states_controller:
+  type: "joint_state_controller/JointStateController"
+  publish_rate: 50
+
+#控制所有关节
+arm_controller:
+  type: "arm_control/JointTrajectoryController"
+  joints:
+    - toe_foot_joint
+    - foot_thigh_joint
+    - thigh_calf_joint
+    - calf_big_arm_joint
+    - big_arm_arm_joint
+    - arm_hand_joint
+    - hand_finger_joint
+  gains:
+    toe_foot_joint: {p: 100.0, d: 10}
+    foot_thigh_joint: {p: 100.0, d: 10}
+    thigh_calf_joint: {p: 100.0, d: 10}
+    calf_big_arm_joint: {p: 100.0, d: 10}
+    big_arm_arm_joint: {p: 100.0, d: 10}
+    arm_hand_joint: {p: 100.0, d: 10}
+    hand_finger_joint: {p: 100.0, d: 10}

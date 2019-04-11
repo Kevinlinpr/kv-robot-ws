@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 2.8.3)
 project(kv_opencv)
 set(OpenCV_DIR /home/kevinlinpr/Public/OpenCV_tutorial/OpenCV/opencv-3.2.0/build)
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
-
+add_compile_options(-std=c++11)
+#set(CMAKE_CXX_STANDARD 17)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -130,7 +130,7 @@ include_directories(
 
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-#set(CMAKE_CXX_STANDARD 17)
+
 set(SOURCE_FILES src/image_converter.cpp)
 
 ## Declare a C++ library
